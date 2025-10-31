@@ -2,7 +2,7 @@
 # --------------------------------------------------------------
 # TP : Implémentation de quelques méthodes numériques en Python
 # Étudiant : (jiagho feukeng chamberline felicite)
-# Classe : L2
+# Classe : L3
 # --------------------------------------------------------------
 # Contenu :
 # 1. Méthode du Pivot de Gauss
