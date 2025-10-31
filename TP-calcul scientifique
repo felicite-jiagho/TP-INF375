@@ -1,0 +1,75 @@
+# On veur resoudre des equations en dimension 1 avec des fonctions predefinies de python et avec nos propres fonctions
+
+from scipy.optimize import bisect, root_scalar  # importation des fonctions predefinies
+
+# Definition de la fonction d'utilisation
+def f(x):
+    return x**2 - 2
+
+#DEfinition de la fonction derivee de f
+def f_prime(x):
+    return 2*x
+
+# definition de la fonction de dichotomie
+def dichotomie(a,b,seuil):
+    x,y,s=a,b,a
+    if f(y)==0:
+        s=y
+    while ((y-x)>=seuil and f(x)*f(y)<0):
+        s=(x+y)/2
+        if ((f(x)*f(s))<0):
+            y=s
+        else:
+            x=s
+    return s
+
+racine_dichotomie_predefinie = bisect(f,1,2)
+
+# definition de la fonction de balayage
+def balayage(a,b,seuil):
+    x=a
+    while((f(x)*f(x+seuil))>0 and x+seuil<=b):
+        x=x+seuil
+    return x+(seuil/2)
+
+# Definition de la fonction methode de la secante
+def secante(a,b,seuil):
+    x0 = a
+    x1 = b
+    s = x0
+    if f(x1) == 0:
+        s = x1
+    while (f(x0)*f(x1) <0) and abs(x0-x1)>=seuil:
+        s= (x0*f(x1) - x1*f(x0)) / (f(x1) - f(x0))
+        if f(s)*f(x1) >0:
+            x1 = s
+        else:
+            x0 = s
+    return s
+
+racine_secant_predefinie = root_scalar(f, method='secant',x0=1, x1=2) 
+
+#Definition de la methode de Newton
+def methode_newton(a,seuil):
+    x0 = a
+    s = x0
+    if f_prime(x0) != 0:
+        s = x0 - (f(x0) / f_prime(x0))
+    while f_prime(s)!=0 and abs(s-x0)>=seuil:
+        x0 = s
+        s = x0 - (f(x0) / f_prime(x0))
+    return s
+
+racine_newton_predefinie = root_scalar(f,x0=1,fprime=f_prime, method='newton')
+
+
+print(f"racine_dichotomie = {dichotomie(1,2,0.01)}")
+print(f"racine_dichotomie_predefinie = {racine_dichotomie_predefinie}\n")
+
+print(f"racine_balayage = {balayage(1,2,0.01)}\n")
+
+print(f"racine_secante = {secante(1,2,0.01)}\n")
+print(f"racine_secante_predefinie =\n {racine_secant_predefinie}\n")
+
+print(f"racine_newton = {methode_newton(1,0.01)}")
+print(f"racine_newton_predefinie =\n {racine_newton_predefinie}\n")
